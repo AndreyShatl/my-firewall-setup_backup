@@ -1,0 +1,13 @@
+[Unit]
+Description=Zapret YouTube UDP Traffic Processing
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/my-firewall-setup/zapret/binaries/my/nfqws --qnum=201 --filter-udp=80,443,19302-19309 --hostlist=/opt/my-firewall-setup/zapret/ipset/youtube_hosts.txt
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

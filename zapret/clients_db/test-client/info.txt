@@ -1,0 +1,4 @@
+Client: test-client
+IP: 10.0.0.2
+Public Key: 0XTR06N8RQk0hxaN/KEaGlBKMapXVgOmJxDlWUVEMzs=
+Added: Вт 18 ноя 2025 13:37:55 MSK

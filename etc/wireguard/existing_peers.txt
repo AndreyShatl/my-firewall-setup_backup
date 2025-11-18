@@ -1,0 +1,2 @@
+peer1: u00oaxWEguwV/NbQGfAcWc5sYHuq4VPVydMFTjB90QE= (10.0.0.4)
+peer2: O8BC+VktsIiH1rC4RdPstP8uRxiCKHa93aXk+8eMtQ4= (10.0.0.3)

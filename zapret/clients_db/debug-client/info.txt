@@ -1,0 +1,4 @@
+Client: debug-client
+IP: 10.0.0.5
+Public Key: 7NTLdMOwhRSwU6d1vVTi92QLy1CeXb+mCGF9hQoZNUI=
+Added: Вт 18 ноя 2025 13:53:31 MSK

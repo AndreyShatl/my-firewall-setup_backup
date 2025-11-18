@@ -1,0 +1,58 @@
+#!/bin/bash
+
+CONFIG_DIR="/opt/my-firewall-setup/etc"
+SCRIPTS_DIR="/opt/my-firewall-setup/scripts"
+SYSTEMD_DIR="/opt/my-firewall-setup/systemd/services"
+ZAPRET_DIR="/opt/my-firewall-setup/zapret"
+
+case "$1" in
+    start)
+        echo "Starting firewall and services..."
+        sudo nft -f $CONFIG_DIR/nftables/main.conf
+        $SCRIPTS_DIR/manage-services.sh start
+        ;;
+    stop)
+        echo "Stopping firewall and services..."
+        $SCRIPTS_DIR/manage-services.sh stop
+        sudo nft delete table inet filter 2>/dev/null || true
+        sudo nft delete table ip nat 2>/dev/null || true
+        sudo nft delete table inet traffic_shaping 2>/dev/null || true
+        ;;
+    restart)
+        $0 stop
+        sleep 2
+        $0 start
+        ;;
+    status)
+        echo "=== WireGuard Status ==="
+        sudo wg show 2>/dev/null || echo "WireGuard not configured"
+        
+        echo -e "\n=== NFTables Rules ==="
+        sudo nft list ruleset 2>/dev/null || echo "NFTables not configured"
+        
+        echo -e "\n=== Zapret Services ==="
+        $SCRIPTS_DIR/manage-services.sh status
+        
+        echo -e "\n=== Processes ==="
+        pgrep nfqws >/dev/null && echo "nfqws processes: $(pgrep nfqws | wc -l)" || echo "No nfqws processes"
+        
+        echo -e "\n=== Hostlist Counts ==="
+        echo "YouTube: $(wc -l < $ZAPRET_DIR/ipset/youtube_hosts.txt) domains"
+        echo "Instagram: $(wc -l < $ZAPRET_DIR/ipset/instagram_hosts.txt) domains" 
+        echo "Discord: $(wc -l < $ZAPRET_DIR/ipset/discord_hosts.txt) domains"
+        ;;
+    list-clients)
+        echo "Clients:"
+        find $ZAPRET_DIR/clients_db -maxdepth 1 -type d 2>/dev/null | grep -v "^$ZAPRET_DIR/clients_db$" | while read client; do
+            echo "  $(basename $client)"
+        done
+        ;;
+    reload)
+        echo "Reloading firewall rules..."
+        sudo nft -f $CONFIG_DIR/nftables/main.conf
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status|list-clients|reload}"
+        exit 1
+        ;;
+esac

@@ -1,0 +1,13 @@
+[Unit]
+Description=Zapret Discord UDP Traffic Processing
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/my-firewall-setup/zapret/binaries/my/nfqws --qnum=205 --filter-udp=80,443,3478-3481 --hostlist=/opt/my-firewall-setup/zapret/ipset/discord_hosts.txt
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

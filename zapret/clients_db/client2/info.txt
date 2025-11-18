@@ -1,0 +1,4 @@
+Client: client2  
+IP: 10.0.0.3
+Public Key: O8BC+VktsIiH1rC4RdPstP8uRxiCKHa93aXk+8eMtQ4=
+Added: existing
